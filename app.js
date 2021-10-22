@@ -43,16 +43,16 @@ app.post("/", function(req,res){
                 const deg = weatherData.wind.deg
 
                 
-                updateJSON(temp, pressure, humidity, visibility, deg) ;
+                // updateJSON(temp, pressure, humidity, visibility, deg) ;
 
-                const process = spawn('python', ['./model/main.py']);
-                // collect data from script
-                process.stdout.on('data', function (data) {
-                 console.log('Pipe data from python script ...');
-                 summary = data.toString();
+                // const process = spawn('python', ['./model/main.py']);
+                // // collect data from script
+                // process.stdout.on('data', function (data) {
+                //  console.log('Pipe data from python script ...');
+                //  summary = data.toString();
                
-                 icon = (summary.trim()).toLowerCase() ;
-                 icon = icon.concat('.svg');
+                //  icon = (summary.trim()).toLowerCase() ;
+                //  icon = icon.concat('.svg');
                 
 
                  res.render( 'index',{
@@ -62,11 +62,13 @@ app.post("/", function(req,res){
                     Humidity : "Humidity : " + humidity,
                     Visibility : "Visibility : " + visibility,
                     Date : date_n,
-                    Day : day_n, 
-                    Icon : "../images/icons/" + icon ,
-                    Summary :  summary
+                    Day : day_n
                     
                     });
+
+
+                    // Icon : "../images/icons/" + icon ,
+                    // Summary :  summary
 
                 });
                
@@ -77,7 +79,7 @@ app.post("/", function(req,res){
                 // })
                
        
-                   });
+                //    });
             }
             else{
                 res.status(response.statusCode).send(response.message);
