@@ -15,7 +15,7 @@ app.use(express.static("public"));
 
 
 app.get("/", function (req, res){
-    res.render('index', { City: 'City', Day: day_n, Date: date_n, Temp: 'Temperature', Pressure: 'Pressure', Humidity: 'Humidity', Visibility: 'Visibility', Icon: '../images/default_image.png', Summary : ""})
+    res.render('index', { City: 'City', Day: day_n, Date: date_n, Temp: 'Temperature', Pressure: 'Pressure', Humidity: 'Humidity', Visibility: 'Visibility'})
 })
 
 app.get("/contact", function (req, res){
