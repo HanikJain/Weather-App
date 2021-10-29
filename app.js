@@ -2,7 +2,6 @@ require('dotenv').config()
 const express = require('express');
 const https = require ("https");
 const bodyParser = require("body-parser");;
-const {updateJSON} = require("./scripts/updateJSON.js");
 const { day_n,  date_n} = require("./scripts/date.js")
 
 
@@ -41,9 +40,6 @@ app.post("/", function(req,res){
                 const deg = weatherData.wind.deg;
                 const summary = weatherData.weather[0].main;
 
-                
-                updateJSON(temp, pressure, humidity, visibility, deg) ;
-    
 
                 wd[0].name = pressure;
                 wd[1].name = humidity;
