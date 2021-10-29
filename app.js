@@ -1,11 +1,10 @@
 require('dotenv').config()
 const express = require('express');
 const https = require ("https");
-const bodyParser = require("body-parser");
-const changeIcon = require("./public/js/app.js");
-const {updateJSON, weatherSummary} = require("./scripts/updateJSON.js");
+const bodyParser = require("body-parser");;
+const {updateJSON} = require("./scripts/updateJSON.js");
 const { day_n,  date_n} = require("./scripts/date.js")
-const {spawn} = require('child_process');
+
 
 
 const app = express();
@@ -13,13 +12,12 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 
+let wd = [{src: '../images/wind-svg.svg', name : 'Pressure'}, {src: '../images/humidity-svg.svg', name : 'Humidity'}, {src: '../images/visibility-svg.svg', name : 'Visibility'}, {src: '../images/wind-deg-svg.svg', name : 'Degree'}]
+
+let border = "border:0px "
 
 app.get("/", function (req, res){
-    res.render('index', { City: 'City', Day: day_n, Date: date_n, Temp: 'Temperature', Pressure: 'Pressure', Humidity: 'Humidity', Visibility: 'Visibility'})
-})
-
-app.get("/contact", function (req, res){
-    res.sendFile(__dirname + "/contact.html");
+    res.render('index', { border: border, City: 'City', Day: day_n, Date: date_n, Temp: 'Temp', wd:wd, summary: ''})
 })
 
 
@@ -40,49 +38,36 @@ app.post("/", function(req,res){
                 const pressure = weatherData.main.pressure;
                 const humidity = weatherData.main.humidity;
                 const visibility = weatherData.visibility;
-                const deg = weatherData.wind.deg
+                const deg = weatherData.wind.deg;
+                const summary = weatherData.weather[0].main;
 
                 
-                // updateJSON(temp, pressure, humidity, visibility, deg) ;
+                updateJSON(temp, pressure, humidity, visibility, deg) ;
+                console.log(weatherData);
 
-                // const process = spawn('python', ['./model/main.py']);
-                // // collect data from script
-                // process.stdout.on('data', function (data) {
-                //  console.log('Pipe data from python script ...');
-                //  summary = data.toString();
-               
-                //  icon = (summary.trim()).toLowerCase() ;
-                //  icon = icon.concat('.svg');
-                
+                wd[0].name = pressure;
+                wd[1].name = humidity;
+                wd[2].name = visibility;
+                wd[3].name = deg;
 
-                 res.render( 'index',{
-                    City : place,
-                    Temp : temp,
-                    Pressure : "Pressure : " + pressure,
-                    Humidity : "Humidity : " + humidity,
-                    Visibility : "Visibility : " + visibility,
-                    Date : date_n,
-                    Day : day_n
-                    
+
+                res.render('index', {
+                     border:border,
+                     City: place, 
+                     Day: day_n, 
+                     Date: date_n, 
+                     Temp:  temp, 
+                     wd:wd, 
+                     summary: summary
                     });
-
-
-                    // Icon : "../images/icons/" + icon ,
-                    // Summary :  summary
-
-                });
+            });
                
-
-
-                // weatherSummary(function foo(x){
-                //     console.log(x);
-                // })
-               
-       
-                //    });
             }
             else{
-                res.status(response.statusCode).send(response.message);
+                // res.status(response.statusCode).send(response.message);
+                border = "border: 3px solid red; "
+                console.log(border);
+                res.render('index', { border: border, City: 'City', Day: day_n, Date: date_n, Temp: 'Temp', wd:wd, summary: ''})
             }
         });
         
@@ -93,6 +78,12 @@ app.post("/", function(req,res){
     
 
 });
+
+
+app.get("/contact", function (req, res){
+    res.sendFile(__dirname + "/public/contact.html");
+})
+
 
 const PORT = process.env.PORT || 3000;
 
