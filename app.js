@@ -43,7 +43,7 @@ app.post("/", function(req,res){
 
                 
                 updateJSON(temp, pressure, humidity, visibility, deg) ;
-                console.log(weatherData);
+    
 
                 wd[0].name = pressure;
                 wd[1].name = humidity;
@@ -66,7 +66,6 @@ app.post("/", function(req,res){
             else{
                 // res.status(response.statusCode).send(response.message);
                 border = "border: 3px solid red; "
-                console.log(border);
                 res.render('index', { border: border, City: 'City', Day: day_n, Date: date_n, Temp: 'Temp', wd:wd, summary: ''})
             }
         });

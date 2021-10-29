@@ -233,10 +233,10 @@ a:hover::before {
     #container{
         height: 140vh;
         width: 98vw;
-        grid-template-rows: 5% 15% 35% 40%;
+        grid-template-rows: 5% 10% 40% 40%;
     }
     .content{
-        grid-template-rows: 25% 40% 35%;
+        grid-template-rows: 25% 35% 40%;
         width: 90%;
         height: 90%;
         /* background-color: var(--background-color); */
@@ -267,6 +267,10 @@ a:hover::before {
     #weather-data{
         gap: 1rem;
         grid-template-columns: repeat(auto-fit,minmax(140px, 1fr)); 
+    }
+
+    #content-weather-data h2{
+        margin-top: 30px;
     }
 
 }
